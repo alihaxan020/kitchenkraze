@@ -12,7 +12,10 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import MasonryList from "@react-native-seoul/masonry-list";
+import Loading from "./loading";
+import { useNavigation } from "@react-navigation/native";
 export default function Recipes({ meals, categories }) {
+  const navigation = useNavigation();
   return (
     <View className="mx-4 space-y-3">
       <Text
@@ -22,13 +25,17 @@ export default function Recipes({ meals, categories }) {
         Recipes
       </Text>
       <View>
-        {categories.length == 0 || meals.length == 0 ? null : (
+        {categories.length == 0 || meals.length == 0 ? (
+          <Loading size="large" className="mt-20" color="#fbbf24" />
+        ) : (
           <MasonryList
             data={meals}
             keyExtractor={(item) => item.idMeal}
             numColumns={2}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item, i }) => <RecipeCard recipe={item} index={i} />}
+            renderItem={({ item, i }) => (
+              <RecipeCard recipe={item} index={i} navigation={navigation} />
+            )}
             onEndReachedThreshold={0.1}
           />
         )}
@@ -37,7 +44,7 @@ export default function Recipes({ meals, categories }) {
   );
 }
 
-const RecipeCard = ({ recipe, index }) => {
+const RecipeCard = ({ recipe, index, navigation }) => {
   let isEven = index % 2 == 0;
   return (
     <Animated.View
@@ -55,6 +62,7 @@ const RecipeCard = ({ recipe, index }) => {
           paddingRight: isEven ? 8 : 0,
         }}
         className="flex justify-center mb-4 space-y-1"
+        onPress={() => navigation.navigate("RecipeDetail", { ...recipe })}
       >
         <Image
           source={{ uri: recipe.strMealThumb }}
