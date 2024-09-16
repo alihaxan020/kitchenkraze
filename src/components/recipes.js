@@ -64,13 +64,14 @@ const RecipeCard = ({ recipe, index, navigation }) => {
         className="flex justify-center mb-4 space-y-1"
         onPress={() => navigation.navigate("RecipeDetail", { ...recipe })}
       >
-        <Image
+        <Animated.Image
           source={{ uri: recipe.strMealThumb }}
           style={{
             width: "100%",
             height: index % 3 == 0 ? hp(25) : hp(35),
             borderRadius: 35,
           }}
+          sharedTransitionTag={recipe.strMeal}
         />
         <Text
           style={{ fontSize: hp(1.5) }}

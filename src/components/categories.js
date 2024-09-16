@@ -35,7 +35,7 @@ export default function Categories({
               className="flex items-center space-y-1"
             >
               <View className={`rounded-full p-[6px] ${activeButtonClass}`}>
-                <Image
+                <Animated.Image
                   source={{ uri: cat.strCategoryThumb }}
                   style={{
                     width: 30,

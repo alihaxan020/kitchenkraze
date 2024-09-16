@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.alihaxan.kitchenkraze"
     },
     "web": {
       "bundler": "metro",
@@ -28,6 +29,11 @@
     },
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dda5de49-d52b-48a3-83ea-acf0d7eb33a2"
+      }
     }
   }
 }

@@ -15,6 +15,13 @@ import {
   Square3Stack3DIcon,
   UsersIcon,
 } from "react-native-heroicons/solid";
+import Animated, {
+  withSpring,
+  useSharedValue,
+  FadeInDown,
+  useAnimatedStyle,
+  FadeIn,
+} from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import Loading from "../components/loading";
@@ -59,7 +66,7 @@ export default function RecipeDetailScreen(props) {
   };
   useEffect(() => {
     getMealData(item.idMeal);
-  }, []);
+  }, [item.idMeal]);
   return (
     <ScrollView
       className="flex-1 bg-white"
@@ -80,7 +87,10 @@ export default function RecipeDetailScreen(props) {
           }}
         />
       </View>
-      <View className="w-full flex-row absolute justify-between items-center pt-6">
+      <Animated.View
+        entering={FadeIn.delay(200).duration(1000)}
+        className="w-full flex-row absolute justify-between items-center pt-6"
+      >
         <TouchableOpacity
           className="p-2 ml-4 rounded-full bg-white"
           onPress={() => navigation.goBack()}
@@ -97,11 +107,17 @@ export default function RecipeDetailScreen(props) {
             color={isFavorite ? "red" : "gray"}
           />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
       {loading ? (
         <Loading size="large" color="gray" className="mt-16" />
       ) : (
-        <View className="mx-4 flex justify-between space-y-4 pt-8">
+        <Animated.View
+          entering={FadeInDown.delay(300)
+            .duration(1100)
+            .springify()
+            .damping(12)}
+          className="mx-4 flex justify-between space-y-4 pt-8"
+        >
           <View className="space-y-2">
             <Text
               style={{ fontSize: hp(3) }}
@@ -117,7 +133,13 @@ export default function RecipeDetailScreen(props) {
             </Text>
           </View>
           <View className="flex-row justify-around">
-            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
+            <Animated.View
+              entering={FadeInDown.delay(400)
+                .duration(1100)
+                .springify()
+                .damping(12)}
+              className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300"
+            >
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -138,8 +160,14 @@ export default function RecipeDetailScreen(props) {
                   Mins
                 </Text>
               </View>
-            </View>
-            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
+            </Animated.View>
+            <Animated.View
+              entering={FadeInDown.delay(400)
+                .duration(1200)
+                .springify()
+                .damping(12)}
+              className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300"
+            >
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -160,8 +188,14 @@ export default function RecipeDetailScreen(props) {
                   Servings
                 </Text>
               </View>
-            </View>
-            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
+            </Animated.View>
+            <Animated.View
+              entering={FadeInDown.delay(400)
+                .duration(1300)
+                .springify()
+                .damping(12)}
+              className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300"
+            >
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -182,8 +216,14 @@ export default function RecipeDetailScreen(props) {
                   Cal
                 </Text>
               </View>
-            </View>
-            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
+            </Animated.View>
+            <Animated.View
+              entering={FadeInDown.delay(400)
+                .duration(1400)
+                .springify()
+                .damping(112)}
+              className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300"
+            >
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -206,9 +246,15 @@ export default function RecipeDetailScreen(props) {
                   Easy
                 </Text>
               </View>
-            </View>
+            </Animated.View>
           </View>
-          <View className="space-y-4">
+          <Animated.View
+            entering={FadeInDown.delay(700)
+              .duration(1100)
+              .springify()
+              .damping(12)}
+            className="space-y-4"
+          >
             <Text className="font-bold flex-1 text-neutral-700">
               Ingredients
             </Text>
@@ -241,7 +287,7 @@ export default function RecipeDetailScreen(props) {
                 );
               })}
             </View>
-          </View>
+          </Animated.View>
           <View className="space-y-4">
             <Text className="font-bold flex-1 text-neutral-700">
               Ingredients
@@ -266,7 +312,7 @@ export default function RecipeDetailScreen(props) {
               </View>
             </View>
           )}
-        </View>
+        </Animated.View>
       )}
     </ScrollView>
   );
