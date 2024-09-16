@@ -18,6 +18,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import Loading from "../components/loading";
+import YoutubeIframe from "react-native-youtube-iframe";
 export default function RecipeDetailScreen(props) {
   let item = props.route.params;
   const [isFavorite, setIsFavourite] = useState(false);
@@ -36,6 +37,25 @@ export default function RecipeDetailScreen(props) {
     } catch (error) {
       console.log("ERROR: ", error.message);
     }
+  };
+  const ingredientIndexes = (meal) => {
+    if (!meal) return [];
+    let indexes = [];
+    for (let i = 0; i <= 20; i++) {
+      if (meal["strIngredient" + i]) {
+        indexes.push(i);
+      }
+    }
+    return indexes;
+  };
+
+  const getYoutubeId = (url) => {
+    const regex = /[?&]v=([^&]+)/;
+    const match = url.match(regex);
+    if (match && match[1]) {
+      return match[1];
+    }
+    return null;
   };
   useEffect(() => {
     getMealData(item.idMeal);
@@ -97,7 +117,7 @@ export default function RecipeDetailScreen(props) {
             </Text>
           </View>
           <View className="flex-row justify-around">
-            <View className="flex rounded-full bg-amber-300 p-2">
+            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -119,7 +139,7 @@ export default function RecipeDetailScreen(props) {
                 </Text>
               </View>
             </View>
-            <View className="flex rounded-full bg-amber-300 p-2">
+            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -141,7 +161,7 @@ export default function RecipeDetailScreen(props) {
                 </Text>
               </View>
             </View>
-            <View className="flex rounded-full bg-amber-300 p-2">
+            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -163,7 +183,7 @@ export default function RecipeDetailScreen(props) {
                 </Text>
               </View>
             </View>
-            <View className="flex rounded-full bg-amber-300 p-2">
+            <View className="flex rounded-full bg-amber-300 p-2 shadow-sm shadow-gray-300">
               <View
                 style={{ width: hp(6.5), height: hp(6.5) }}
                 className="bg-white rounded-full flex justify-center items-center"
@@ -188,6 +208,64 @@ export default function RecipeDetailScreen(props) {
               </View>
             </View>
           </View>
+          <View className="space-y-4">
+            <Text className="font-bold flex-1 text-neutral-700">
+              Ingredients
+            </Text>
+            <View className="space-y-2 ml-2">
+              {ingredientIndexes(meal).map((i) => {
+                return (
+                  <View className="space-x-4 flex-row " key={i}>
+                    <View
+                      className="bg-amber-300 rounded-full"
+                      style={{
+                        width: hp(1.5),
+                        height: hp(1.5),
+                      }}
+                    />
+                    <View className="space-x-2 flex-row">
+                      <Text
+                        style={{ fontSize: hp(1.7) }}
+                        className="font-extrabold text-neutral-700"
+                      >
+                        {meal["strMeasure" + i]}
+                      </Text>
+                      <Text
+                        style={{ fontSize: hp(1.7) }}
+                        className="font-medium text-neutral-600"
+                      >
+                        {meal["strIngredient" + i]}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+          <View className="space-y-4">
+            <Text className="font-bold flex-1 text-neutral-700">
+              Ingredients
+            </Text>
+            <Text style={{ fontSize: hp(1.6) }} className="text-neutral-600">
+              {meal?.strInstructions}
+            </Text>
+          </View>
+          {meal?.strYoutube && (
+            <View className="space-y-4">
+              <Text
+                style={{ fontSize: hp(2.5) }}
+                className="font-bold flex-1 text-neutral-700"
+              >
+                Recipe Video
+              </Text>
+              <View className="shadow-sm shadow-black ring-3 rounded-sm">
+                <YoutubeIframe
+                  videoId={getYoutubeId(meal.strYoutube)}
+                  height={hp(30)}
+                />
+              </View>
+            </View>
+          )}
         </View>
       )}
     </ScrollView>
