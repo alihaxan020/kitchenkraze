@@ -1,15 +1,14 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
-import React from "react";
-import Animated, {
-  withSpring,
-  useSharedValue,
-  FadeInDown,
-} from "react-native-reanimated";
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import React from "react";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
+const { height } = Dimensions.get("screen");
 export default function Categories({
   categories,
   activeCategory,
@@ -43,7 +42,10 @@ export default function Categories({
                   }}
                 />
               </View>
-              <Text className="text-neutral-600" style={{ fontSize: hp(1.6) }}>
+              <Text
+                className="text-neutral-600"
+                style={{ fontSize: height * 0.016 }}
+              >
                 {cat.strCategory}
               </Text>
             </TouchableOpacity>

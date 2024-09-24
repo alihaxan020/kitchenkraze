@@ -1,17 +1,9 @@
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable, Image, Dimensions } from "react-native";
 import React from "react";
-import Animated, {
-  withSpring,
-  useSharedValue,
-  FadeInDown,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import MasonryList from "@react-native-seoul/masonry-list";
+import { MasonryFlashList } from "@shopify/flash-list";
+const { height } = Dimensions.get("screen");
 import Loading from "./loading";
 import { useNavigation } from "@react-navigation/native";
 export default function Recipes({ meals, categories }) {
@@ -19,7 +11,7 @@ export default function Recipes({ meals, categories }) {
   return (
     <View className="mx-4 space-y-3">
       <Text
-        style={{ fontSize: hp(3) }}
+        style={{ fontSize: height * 0.03 }}
         className="font-semibold text-neutral-600"
       >
         Recipes
@@ -28,15 +20,15 @@ export default function Recipes({ meals, categories }) {
         {categories.length == 0 || meals.length == 0 ? (
           <Loading size="large" className="mt-20" color="#fbbf24" />
         ) : (
-          <MasonryList
+          <MasonryFlashList
             data={meals}
             keyExtractor={(item) => item.idMeal}
             numColumns={2}
             showsVerticalScrollIndicator={false}
+            estimatedItemSize={meals.length}
             renderItem={({ item, i }) => (
               <RecipeCard recipe={item} index={i} navigation={navigation} />
             )}
-            onEndReachedThreshold={0.1}
           />
         )}
       </View>
@@ -56,7 +48,6 @@ const RecipeCard = ({ recipe, index, navigation }) => {
       <Pressable
         style={{
           width: "100%",
-          //   height: index % 3 == 0 ? hp(25) : hp(35),
           borderRadius: 35,
           paddingLeft: isEven ? 0 : 8,
           paddingRight: isEven ? 8 : 0,
@@ -64,17 +55,16 @@ const RecipeCard = ({ recipe, index, navigation }) => {
         className="flex justify-center mb-4 space-y-1"
         onPress={() => navigation.navigate("RecipeDetail", { ...recipe })}
       >
-        <Animated.Image
+        <Image
           source={{ uri: recipe.strMealThumb }}
           style={{
             width: "100%",
-            height: index % 3 == 0 ? hp(25) : hp(35),
+            height: index % 3 == 0 ? height * 0.25 : height * 0.35,
             borderRadius: 35,
           }}
-          sharedTransitionTag={recipe.strMeal}
         />
         <Text
-          style={{ fontSize: hp(1.5) }}
+          style={{ fontSize: height * 0.015 }}
           className="font-semibold text-neutral-600 ml-2"
         >
           {recipe.strMeal.length > 20

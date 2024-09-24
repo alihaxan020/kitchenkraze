@@ -1,36 +1,24 @@
 import {
   ScrollView,
-  StyleSheet,
   Text,
   View,
   Image,
   TextInput,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import Animated, {
-  withSpring,
-  useSharedValue,
-  FadeInDown,
-  useAnimatedStyle,
-} from "react-native-reanimated";
 
 import { StatusBar } from "expo-status-bar";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
 
 import { BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import Categories from "../components/categories";
 import axios from "axios";
 import Recipes from "../components/recipes";
-
+const { height } = Dimensions.get("screen");
 const HomeScreen = () => {
   const [activeCategory, setActiveCategory] = useState("Beef");
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
-  const opacity = useSharedValue(0);
-  const translateY = useSharedValue(50);
 
   const getCategories = async () => {
     try {
@@ -67,15 +55,7 @@ const HomeScreen = () => {
   useEffect(() => {
     getCategories();
     getRecipies();
-    opacity.value = withSpring(1);
-    translateY.value = withSpring(0);
   }, []);
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: opacity.value,
-      transform: [{ translateY: translateY.value }],
-    };
-  });
 
   return (
     <View className="flex-1 bg-white">
@@ -89,33 +69,33 @@ const HomeScreen = () => {
           <Image
             source={require("../../assets/images/avatar.png")}
             style={{
-              height: hp(7),
-              width: hp(7.5),
+              height: height * 0.07,
+              width: height * 0.075,
             }}
           />
-          <BellIcon size={hp(4)} color="gray" />
+          <BellIcon size={height * 0.04} color="gray" />
         </View>
         <View className="mx-4 space-y-2 mb-2">
-          <Animated.Text
-            style={[{ fontSize: hp(1.7) }, animatedStyle]}
+          <Text
+            style={{ fontSize: height * 0.017 }}
             className="text-neutral-600"
           >
             Hello, Hassan
-          </Animated.Text>
+          </Text>
           <View>
-            <Animated.Text
-              style={[{ fontSize: hp(3.8) }, animatedStyle]}
+            <Text
+              style={{ fontSize: height * 0.038 }}
               className="font-semibold text-neutral-600"
             >
               Make your own food,
-            </Animated.Text>
+            </Text>
           </View>
-          <Animated.Text
-            style={[{ fontSize: hp(3.8) }, animatedStyle]}
+          <Text
+            style={{ fontSize: height * 0.038 }}
             className="font-semibold text-neutral-600"
           >
             Stay at <Text className="text-amber-400">home</Text>
-          </Animated.Text>
+          </Text>
         </View>
 
         {/* searchbar */}
@@ -150,5 +130,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});
